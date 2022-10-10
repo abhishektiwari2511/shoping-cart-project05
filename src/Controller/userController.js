@@ -102,12 +102,6 @@ const userLogin = async function(req,res){
             return res.status(400).send({ status: false, message: "Password is required!!" })
         }
 
-        // check email for user
-        // let user = await userModel.findOne({ email: email,password:password});
-        
-
-        // check password of existing user
-       
 
         let userid = await userModel.findOne({ email: email, password: password })
         if (!userid) return res.status(400).send({ status: false, message: "Email or password is not correct, Please provide valid email or password" });
@@ -121,8 +115,13 @@ const userLogin = async function(req,res){
             },
             "Project5-Group56"
         );
+       let obj = {
+        userId:userid._id,
+        token:token
+        
+       }
 
-        res.status(200).send({ status: true, message: "Success", data: token });
+        res.status(200).send({ status: true, message: "Success", data: obj });
     }
     catch(err){
         res.status(500).send({ status: false, Error: err.message });
