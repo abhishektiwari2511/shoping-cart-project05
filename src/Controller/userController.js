@@ -109,10 +109,10 @@ const userLogin = async function(req,res){
         let token = jwt.sign(
             {
                 userId: userid._id.toString(),
-                exp: Math.floor(Date.now() / 1000) + (60 * 360)
+                iat : Math.floor(Date.now() / 1000) + (60 * 360)
             },
-            "Project5-Group56"
-        );
+            process.env.SECRET_TOKEN,
+            { expiresIn: "24h" });
        let obj = {
         userId:userid._id,
         token:token
