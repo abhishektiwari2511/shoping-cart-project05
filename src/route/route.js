@@ -2,10 +2,14 @@ const express = require('express')
 
 const router = express.Router()
 
-const userController = require("../Controller/userController")
+const {createuser,userLogin, getuser} = require("../Controller/userController")
 
-router.post("/write-file-aws",userController.awsfile)
-router.post("/login",userController.userLogin)
+router.post("/register",createuser)
+
+router.post("/login",userLogin)
+
+router.get("/user/:userId/profile" ,getuser)
+
 
 
 
