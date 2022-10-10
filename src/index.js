@@ -2,6 +2,7 @@ const express = require('express');
 const route = require('./route/route.js');
 const app = express();
 const multer = require('multer')
+require('dotenv').config();
 
 
 app.use(express.json());
@@ -10,13 +11,17 @@ app.use(multer().any())
 
 const mongoose = require('mongoose')
 
-mongoose.connect("mongodb+srv://Aniket:EpboWtWnytBBkVgl@cluster0.bxt9xv1.mongodb.net/Group-56-ProductManagement?retryWrites=true&w=majority",
+mongoose.connect(process.env.DB,
  {useNewUrlParser: true})
     .then(() => console.log('MongoDb is connected'))
     .catch(err => console.log(err))
 
 app.use('/', route);
+//----------handling wrong api edge case--------------------------------------------
+app.use((req, res, next) => {
+    res.status(400).send({ status: false, error: "URL is wrong" });
+})
 
-app.listen(process.env.PORT || 3000, function() {
-	console.log('Express app running on port ' + (process.env.PORT || 3000))
+app.listen(process.env.PORT , function() {
+	console.log('Express app running on port ' + (process.env.PORT ))
 });
