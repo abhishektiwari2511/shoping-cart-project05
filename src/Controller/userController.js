@@ -2,6 +2,7 @@ const userModel = require("../Model/userModel")
 const aws= require("aws-sdk")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
+const validator = require("../validator/validator")
 
 const isValidreqbody = function (body) {
     return Object.keys(body).length > 0
@@ -97,22 +98,21 @@ const userLogin = async function(req,res){
         if (!(email)) {
             return res.status(400).send({ status: false, message: "Email is required!!" })
         }
-
-        // check email for user
-        let user = await userModel.findOne({ email: email });
-        if (!user) return res.status(400).send({ status: false, message: "Email is not correct, Please provide valid email" });
-
         if (!(password)) {
             return res.status(400).send({ status: false, message: "Password is required!!" })
         }
 
+        // check email for user
+        // let user = await userModel.findOne({ email: email,password:password});
+        
+
         // check password of existing user
-        let pass = await userModel.findOne({ password: password });
-        if (!pass) return res.status(400).send({ status: false, message: "Password is not correct, Please provide valid password" });
+       
 
         let userid = await userModel.findOne({ email: email, password: password })
+        if (!userid) return res.status(400).send({ status: false, message: "Email or password is not correct, Please provide valid email or password" });
 
-
+        
         // using jwt for creating token
         let token = jwt.sign(
             {
