@@ -40,8 +40,6 @@ let uploadFile= async ( file) =>{
 
    })
 }
-
-
      const awsfile = async function(req, res) {
     try{
         let files= req.files
