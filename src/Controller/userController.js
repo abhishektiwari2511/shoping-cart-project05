@@ -106,10 +106,10 @@ const userLogin = async function(req,res){
         let token = jwt.sign(
             {
                 userId: userid._id.toString(),
-                iat : Math.floor(Date.now() / 1000) + (60 * 360)
+                iat : Math.floor(Date.now() / 1000),
             },
             process.env.SECRET_TOKEN,
-            { expiresIn: "24h" });
+            { expiresIn: "10 min" });
        let obj = {
         userId:userid._id,
         token:token
@@ -148,13 +148,25 @@ const updateuser = async function(req,res){
         
          if(Object.keys(data).length == 0 && files.length == 0)
          return res.status(404).send({ status: false, message: 'plss put some data for update' }) 
+       
+         let {fname, lname, email, phone, password, address} = data;
+
+         if(fname){
+            if (!isValid(fname) || !isValidName(fname) ) return res.status(400).send({ status: false, message: "first name is required!!" })
+         }           
+
+
+
+
+
+
+
 
         if(files && files.length>0) {
             // res.send the link back to frontend/postman
             let uploadedFileURL= await uploadFile( files[0] )
             data.profileImage = uploadedFileURL
         }
-        let {fname, lname, email, phone, password, address} = data;
         let updateuser = await userModel.findOneAndUpdate(
             {_id : userid },
             {

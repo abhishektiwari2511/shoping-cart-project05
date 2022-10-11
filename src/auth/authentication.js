@@ -9,16 +9,9 @@ const authentication = async function (req, res, next) {
 
        token = token.split(" ")
         let decodedtoken = jwt.verify(token[1],process.env.SECRET_TOKEN, (error, decodedtoken) => {
+           
+        if (error)  return res.status(401).send({ status: false, message: "token is invalid or expired" });
 
-        // jwt.verify(token, "this is a private key", { ignoreExpiration:true }, //avoid the invalid error
-        // function (err, decodedtoken) {
-        //    if (err) return res.status(401).send({ status: false, message: "Token is invalid" });
-        //    if (Date.now() > decodedtoken.exp * 1000) 
-        //        return res .status(401).send({ status: false, message: "Token expired" })
-        if (error) {
-            return res.status(401).send({ status: false, message: "token is invalid" });
-
-        }
         req.loggedInUser=decodedtoken.userId;
         next()
     })
@@ -44,7 +37,6 @@ const authorisation = async function (req, res, next) {
             let id = req.loggedInUser
             if (id != userId) return res.status(403).send({ status: false, msg: "You are not authorised to perform this task" })
        
-
         next();
     }
     catch (error) {
