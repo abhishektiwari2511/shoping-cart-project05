@@ -1,8 +1,8 @@
 const aws= require("aws-sdk")
 
 aws.config.update({
-    accessKeyId: "AKIAY3L35MCRZNIRGT6N",
-    secretAccessKeyId: "9f+YFBVcSjZWM6DG9R4TUN8k8TGe4X+lXmO4jPiU",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKeyId: process.env.AWS_SECRET_ACCESS_KEY,
     region: "ap-south-1"
 })
 

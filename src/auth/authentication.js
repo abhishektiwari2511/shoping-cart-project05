@@ -8,7 +8,7 @@ const authentication = async function (req, res, next) {
         if (!token) return res.status(400).send({ status: false, msg: "token is required" })
 
        token = token.split(" ")
-        let decodedtoken = jwt.verify(token[1], "Project5-Group56", (error, decodedtoken) => {
+        let decodedtoken = jwt.verify(token[1],process.env.SECRET_TOKEN, (error, decodedtoken) => {
            
         if (error)  return res.status(401).send({ status: false, message: "token is invalid or expired" });
 

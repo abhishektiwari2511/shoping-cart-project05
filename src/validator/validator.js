@@ -35,4 +35,4 @@ const isValid = function (value) {
     return true;
   };
 
-module.exports = { isValidName, isValidNumber, isValidId, isValidPincode, isValidEmail, isValid, isValidPincode,isValidPassword }
+module.exports = { isValidName, isValidNumber, isValidId, isValidPincode, isValidEmail, isValid ,isValidPassword }

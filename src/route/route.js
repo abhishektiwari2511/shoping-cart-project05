@@ -5,6 +5,7 @@ const router = express.Router()
 const {createuser,userLogin, getuser, updateuser} = require("../Controller/userController")
 
 const {authentication,authorisation} = require("../auth/authentication");
+
 router.post("/register",createuser)
 
 router.post("/login",userLogin)
