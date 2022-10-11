@@ -146,8 +146,8 @@ const updateuser = async function(req,res){
         let files = req.files;
         let userid = req.params.userId;
         
-        //  if(files.length == 0 || Object.keys(data).length == 0)
-        //  return res.status(404).send({ status: false, message: 'plss put some data for update' }) 
+         if(Object.keys(data).length == 0 && files.length == 0)
+         return res.status(404).send({ status: false, message: 'plss put some data for update' }) 
 
         if(files && files.length>0) {
             // res.send the link back to frontend/postman
