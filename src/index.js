@@ -2,7 +2,7 @@ const express = require('express');
 const route = require('./route/route.js');
 const app = express();
 const multer = require('multer')
-require('dotenv').config();
+// require('dotenv').config();
 
 
 app.use(express.json());
@@ -11,7 +11,7 @@ app.use(multer().any())
 
 const mongoose = require('mongoose')
 
-mongoose.connect(process.env.DB,
+mongoose.connect("mongodb+srv://Aniket:EpboWtWnytBBkVgl@cluster0.bxt9xv1.mongodb.net/Group-56-ProductManagement?retryWrites=true&w=majority",
  {useNewUrlParser: true})
     .then(() => console.log('MongoDb is connected'))
     .catch(err => console.log(err))
@@ -22,6 +22,6 @@ app.use((req, res, next) => {
     res.status(404).send({ status: false, error: "path not found" });
 })
 
-app.listen(process.env.PORT , function() {
-	console.log('Express app running on port ' + (process.env.PORT ))
+app.listen(process.env.PORT || 3000 , function() {
+	console.log('Express app running on port ' + (process.env.PORT || 3000 ))
 });

@@ -108,7 +108,7 @@ const userLogin = async function(req,res){
                 userId: userid._id.toString(),
                 iat : Math.floor(Date.now() / 1000),
             },
-            process.env.SECRET_TOKEN,
+            "Project5-Group56",
             { expiresIn: "10 min" });
        let obj = {
         userId:userid._id,
