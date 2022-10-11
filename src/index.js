@@ -19,7 +19,7 @@ mongoose.connect(process.env.DB,
 app.use('/', route);
 //----------handling wrong api edge case--------------------------------------------
 app.use((req, res, next) => {
-    res.status(400).send({ status: false, error: "URL is wrong" });
+    res.status(404).send({ status: false, error: "path not found" });
 })
 
 app.listen(process.env.PORT , function() {

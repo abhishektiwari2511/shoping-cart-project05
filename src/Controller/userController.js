@@ -29,10 +29,10 @@ const { default: mongoose } = require("mongoose");
         if(newemail) return res.status(400).send({ status: false, message: "Email is already present" })
 
         if (!isValidEmail(email)) return res.status(400).send({ status: false, message: "Email is invalid" })
-        
+
         if (!isValid(phone)) return res.status(400).send({ status: false, message: "ph number is required!!" })
         
-        const newphone = await userModel.findOne({email});
+        const newphone = await userModel.findOne({phone});
         if(newphone) return res.status(400).send({ status: false, message: "phone number is already present" })
 
         if (!isValidNumber(phone))  return res.status(400).send({ status: false, message: "ph number must be starting from 6 and it contains 10 digits" })
@@ -84,9 +84,7 @@ const { default: mongoose } = require("mongoose");
 const userLogin = async function(req,res){
     try{
         let data = req.body;
-        if (!isValid(data)) {
-            return res.status(400).send({ statua: false, message: "Please provide login details!!" })
-        }
+        if (Object.keys(data).length == 0) return res.status(400).send({ statua: false, message: "Please provide login details!!" })
 
         const { email, password } = data
 
@@ -95,8 +93,8 @@ const userLogin = async function(req,res){
         if (!isValid(password))  return res.status(400).send({ status: false, message: "Password is required!!" })
 
       
-        let userid = await userModel.findOne({ email: email})
-        if (!userid) return res.status(400).send({ status: false, message: "Email or password is not correct, Please provide valid email or password" });
+        let userid = await userModel.findOne({ email: email })
+        if (!userid) return res.status(400).send({ status: false, message: "Email or password is not registered plss register first" });
 
         // ---------------------------decoding hash password---------------------------------------------------------
         const matchPass = bcrypt.compare(password, userid.password);
@@ -115,7 +113,6 @@ const userLogin = async function(req,res){
        let obj = {
         userId:userid._id,
         token:token
-        
        }
 
         res.status(200).send({ status: true, message: "Success", data: obj });
@@ -143,5 +140,41 @@ const getuser = async function (req, res) {
     }
 }
 
+const updateuser = async function(req,res){
+    try{ 
+        let data = req.body;
+        let files = req.files;
+        let userid = req.params.userId;
+        
+        //  if(files.length == 0 || Object.keys(data).length == 0)
+        //  return res.status(404).send({ status: false, message: 'plss put some data for update' }) 
 
-module.exports = {userLogin,createuser,getuser}
+        if(files && files.length>0) {
+            // res.send the link back to frontend/postman
+            let uploadedFileURL= await uploadFile( files[0] )
+            data.profileImage = uploadedFileURL
+        }
+        let {fname, lname, email, phone, password, address} = data;
+        let updateuser = await userModel.findOneAndUpdate(
+            {_id : userid },
+            {
+                $set : {
+                     fname : fname, lname:lname, email:email,profileImage:  data.profileImage, phone:phone, password:password, address:address
+                }
+            },
+            { new : true}
+        )       
+
+         if(!updateuser){
+            return res.status(404).send({ status: false, message: "doscument is missing which you want to update or userid is wrong" })
+         } else {
+            return res.status(200).send({ status: true, message: "user profile updated", data: updateuser })
+         }
+
+    }catch (error) {
+        console.log(error)
+        return res.status(500).send({ message: error.message })
+    }
+}
+
+module.exports = {userLogin,createuser,getuser,updateuser}
