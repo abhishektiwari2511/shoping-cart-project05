@@ -104,7 +104,7 @@ const userLogin = async function(req,res){
           { _id: userid._id.toString() },
           process.env.SECRET_TOKEN,
           {
-            expiresIn: "1h",
+            expiresIn: "1hr",
           }
         );
         res.setHeader("x-api-key", token);
@@ -152,7 +152,7 @@ const updateuser = async function (req, res) {
       const update = {};
   
       const { fname, lname, email, phone, password, address } = data;
-  
+
       if (Object.keys(data).length == 0 && !files) return res.status(400).send({status: false,message: "Please provide data in the request body!"});
       
       if (fname) {
