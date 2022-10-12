@@ -11,7 +11,7 @@ const productModel = new mongoose.Schema({
     style: {type:String},
     availableSizes: {enum:["S", "XS","M","X", "L","XXL", "XL"]},
     installments: {type:Number},
-    deletedAt: {type:Date}, 
+    deletedAt: {type:Date , default:null}, 
     isDeleted: {type:Boolean, default: false}
 
 },{timestamps:true})

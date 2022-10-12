@@ -4,7 +4,7 @@ const isValidPassword = function (password) {
   };
   
   const isValidName = function (string) {
-      let regex = /^[a-zA-Z\\s]{2,10}$/;
+      let regex = /^[a-zA-Z\\s]{2,20}$/;
       if (regex.test(string)) {
           return true;
       }
@@ -35,4 +35,13 @@ const isValid = function (value) {
     return true;
   };
 
-module.exports = { isValidName, isValidNumber, isValidId, isValidPincode, isValidEmail, isValid ,isValidPassword }
+  const isvalidPrice = function(Price) {
+    if(/^\d+(,\d{1,2})?$/.test(Price)) return true;
+    return false;
+  }
+
+  const isValidAvailableSizes = (availablesizes) => {
+    return ["S", "XS","M","X", "L","XXL", "XL"].indexOf(availablesizes) !== -1
+};
+
+module.exports = { isValidName, isValidNumber, isValidId, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes }
