@@ -189,7 +189,7 @@ const updateuser = async function (req, res) {
       let encryptPassword = data.password;
       update["password"] = encryptPassword;
     }
-
+    
     if (address) {
       const { shipping, billing } = address;
 
@@ -234,8 +234,9 @@ const updateuser = async function (req, res) {
 
     if (files && files.length > 0) {
       let uploadedFileURL = await uploadFile(files[0])
-
       update["profileImage"] = uploadedFileURL;
+     } else if( Object.keys(data).includes("profileImage")) {
+      return res.status(400).send({status: false,message: "plss put the profileimage"});
     }
     const updateUser = await userModel.findOneAndUpdate(
       { _id: userId },

@@ -36,12 +36,12 @@ const isValid = function (value) {
   };
 
   const isvalidPrice = function(Price) {
-    if(/^\d+(,\d{1,2})?$/.test(Price)) return true;
+    if(/^\d+(\.\d{1,2})?$/.test(Price)) return true;
     return false;
   }
 
-  const isValidAvailableSizes = (availablesizes) => {
-    return ["S", "XS","M","X", "L","XXL", "XL"].indexOf(availablesizes) !== -1
+  const isValidAvailableSizes = (availableSizes) => {
+    return ["S", "XS","M","X", "L","XXL", "XL"].indexOf(availableSizes) !== -1
 };
 
 module.exports = { isValidName, isValidNumber, isValidId, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes }
