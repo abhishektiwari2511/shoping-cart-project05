@@ -40,8 +40,11 @@ const isValid = function (value) {
     return false;
   }
 
-  const isValidAvailableSizes = (availableSizes) => {
-    return ["S", "XS","M","X", "L","XXL", "XL"].indexOf(availableSizes) !== -1
+  const isValidAvailableSizes = (availablesizes) => {
+    for( i=0 ;i<availablesizes.length; i++){
+      if(!["S", "XS","M","X", "L","XXL", "XL"].includes(availablesizes[i]))return false
+    }
+    return true
 };
 
 module.exports = { isValidName, isValidNumber, isValidId, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes }

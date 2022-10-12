@@ -35,11 +35,12 @@ const createProduct = async function(req,res){
           if ( !isValidName(style)) return res.status(400).send({ status: false, message: "style is invalid" })
               }
             
-              if(availableSizes){
-       if (!isValid(availableSizes) || !isValidAvailableSizes(availableSizes)) return res.status(400).send({ status: false, message: "availableSizes is required or put valid size" })
-              }
+              if(availableSizes || availableSizes == '') {
+                availableSizes = availableSizes.split(",").map((x)=>x.trim())
+           if ( !isValidAvailableSizes(availableSizes)) return res.status(400).send({ status: false, message: "availableSizes is required or put valid sizes" })
+               }
          
-        if(installments){
+        if(installments || installments == ''){
         if (!isValid(installments) || !isvalidPrice(installments)) return res.status(400).send({ status: false, message: "installments must be valid or present" });
         }
          
