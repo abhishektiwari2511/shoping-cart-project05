@@ -154,17 +154,17 @@ const updateuser = async function (req, res) {
 
     if (Object.keys(data).length == 0 && !files) return res.status(400).send({ status: false, message: "Please provide data in the request body!" });
 
-    if (fname) {
+    if (fname || fname == '') {
       if (!isValid(fname) || !isValidName(fname)) return res.status(400).send({ status: false, message: "fname is invalid" });
       update["fname"] = fname;
     }
 
-    if (lname) {
+    if (lname || lname == '') {
       if (!isValid(lname) || !isValidName(lname)) return res.status(400).send({ status: false, message: "lname is invalid" });
       update["lname"] = lname;
     }
 
-    if (email) {
+    if (email || email == '') {
       if (!isValidEmail(email)) return res.status(400).send({ status: false, message: "Email is invalid!" });
 
       let userEmail = await userModel.findOne({ email: email });
@@ -172,7 +172,7 @@ const updateuser = async function (req, res) {
       update["email"] = email;
     }
 
-    if (phone) {
+    if (phone || phone == '') {
       if (!isValidNumber(phone)) return res.status(400).send({ status: false, message: "Phone is invalid" });
       let userNumber = await userModel.findOne({ phone: phone });
       if (userNumber)
@@ -180,7 +180,7 @@ const updateuser = async function (req, res) {
       update["phone"] = phone;
     }
 
-    if (password) {
+    if (password || password == '') {
       if (!isValidPassword(password)) return res.status(400).send({ status: false, message: "Password should be strong, please use one number, one upper case, one lower case and one special character and characters should be between 8 to 15 only!" });
 
       const salt = await bcrypt.genSalt(10);
@@ -196,17 +196,17 @@ const updateuser = async function (req, res) {
       if (shipping) {
         const { street, city, pincode } = shipping;
 
-        if (street) {
+        if (street || street == '') {
           if (!isValid(address.shipping.street)) return res.status(400).send({ status: false, message: "Invalid shipping street!" });
           update["address.shipping.street"] = street;
         }
 
-        if (city) {
+        if (city || city == '') {
           if (!isValid(address.shipping.city)) return res.status(400).send({ status: false, message: "Invalid shipping city!" });
           update["address.shipping.city"] = city;
         }
 
-        if (pincode) {
+        if (pincode || pincode == '') {
           if (!isValidPincode(address.shipping.pincode)) return res.status(400).send({ status: false, message: "Invalid shipping pincode!" });
           update["address.shipping.pincode"] = pincode;
         }
@@ -215,17 +215,17 @@ const updateuser = async function (req, res) {
       if (billing) {
         const { street, city, pincode } = billing;
 
-        if (street) {
+        if (street || street == '') {
           if (!isValid(address.billing.street)) return res.status(400).send({ status: false, message: "Invalid billing street!" });
           update["address.billing.street"] = street;
         }
 
-        if (city) {
+        if (city || city == '') {
           if (!isValid(address.billing.city)) return res.status(400).send({ status: false, message: "Invalid billing city!" });
           update["address.billing.city"] = city;
         }
 
-        if (pincode) {
+        if (pincode || pincode == '') {
           if (!isValidPincode(address.billing.pincode)) return res.status(400).send({ status: false, message: "Invalid billing pincode!" });
           update["address.billing.pincode"] = pincode;
         }
