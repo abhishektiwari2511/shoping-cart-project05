@@ -238,11 +238,15 @@ const updateuser = async function (req, res) {
      } else if( Object.keys(data).includes("profileImage")) {
       return res.status(400).send({status: false,message: "plss put the profileimage"});
     }
+    
     const updateUser = await userModel.findOneAndUpdate(
       { _id: userId },
       update,
       { new: true }
     );
+
+    if(!updatedata) return res.status(400).send({ status: false, message: "no product prsenet for updation with this id" })
+
     return res.status(200).send({status: true,message: "user profile successfully updated",data: updateUser});
   } catch (error) {
     res.status(500).send({ message: error.message });
