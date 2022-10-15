@@ -12,7 +12,7 @@ router.post("/register",createuser)
 
 router.post("/login",userLogin)
 
-router.get("/user/:userId/profile" ,authentication, getuser)
+router.get("/user/:userId/profile" ,authentication,authorisation, getuser)
 
 router.put("/user/:userId/profile" ,authentication,authorisation, updateuser)
 

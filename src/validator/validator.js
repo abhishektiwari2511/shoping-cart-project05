@@ -35,9 +35,8 @@ const isValid = function (value) {
     return true;
   };
 
-  /^[0-9]+$/ // NUMBERS
   const isvalidPrice = function(Price) {
-    if( /^[0-9]+$/.test(Price)) return true;
+    if( /^[1-9]\d{0,8}(?:\.\d{1,2})?$/.test(Price)) return true;
     return false;
   }
 

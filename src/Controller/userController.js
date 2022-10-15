@@ -13,7 +13,7 @@ const createuser = async function (req, res) {
 
     let { fname, lname, email, phone, password, address } = body;
 
-    if (Object.keys(body).length == 0) return res.status(400).send({ status: false, message: "plss put some data in body" })
+    if (Object.keys(body).length == 0 ) return res.status(400).send({ status: false, message: "plss put some data in body" })
 
     if (!isValid(fname)) return res.status(400).send({ status: false, message: "first name is required!!" })
 
@@ -59,7 +59,6 @@ const createuser = async function (req, res) {
 
     if (!isValidPincode(address.billing.pincode)) return res.status(400).send({ status: false, message: "Invalid billing pincode or Billing Pincode is required" });
 
-
     if (files && files.length > 0) {
       // res.send the link back to frontend/postman
       let uploadedFileURL = await uploadFile(files[0])
@@ -103,16 +102,12 @@ const userLogin = async function (req, res) {
           { _id: userid._id.toString() },
           process.env.SECRET_TOKEN,
           {
-            expiresIn: "1hr",
+            expiresIn: "24hr",
           }
         );
         res.setHeader("x-api-key", token);
 
-        return res.status(200).send({
-          status: true,
-          message: "User login successfull",
-          data: { userId: userid._id, token: token },
-        });
+        return res.status(200).send({status: true, message: "User login successfull", data: { userId:userid._id, token: token }});
       } else {
         return res
           .status(401)
@@ -235,8 +230,8 @@ const updateuser = async function (req, res) {
     if (files && files.length > 0) {
       let uploadedFileURL = await uploadFile(files[0])
       update["profileImage"] = uploadedFileURL;
-     } else if( Object.keys(data).includes("profileImage")) {
-      return res.status(400).send({status: false,message: "plss put the profileimage"});
+      }  else if( Object.keys(data).includes("profileImage")) {
+      return res.status(400).send({status: false,message: "plss put the profileimage or put a valid profileimage"});
     }
     
     const updateUser = await userModel.findOneAndUpdate(
@@ -245,7 +240,7 @@ const updateuser = async function (req, res) {
       { new: true }
     );
 
-    if(!updatedata) return res.status(400).send({ status: false, message: "no product prsenet for updation with this id" })
+    if(!updateUser) return res.status(400).send({ status: false, message: "no product prsenet for updation with this id" })
 
     return res.status(200).send({status: true,message: "user profile successfully updated",data: updateUser});
   } catch (error) {
