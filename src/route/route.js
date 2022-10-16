@@ -8,6 +8,8 @@ const {createProduct, getbyquery, getbyparams, deleteProductById, updateProducts
 
 const {authentication,authorisation} = require("../auth/authentication");
 
+//------------------------------------------user router-----------------------------------------------------------------
+
 router.post("/register",createuser)
 
 router.post("/login",userLogin)
@@ -15,6 +17,8 @@ router.post("/login",userLogin)
 router.get("/user/:userId/profile" ,authentication,authorisation, getuser)
 
 router.put("/user/:userId/profile" ,authentication,authorisation, updateuser)
+
+//------------------------------user routes-----------------------------------------------------------------------------
 
 router.post("/products" ,createProduct)
 
