@@ -242,7 +242,7 @@ const updateuser = async function (req, res) {
 
     if(!updateUser) return res.status(400).send({ status: false, message: "no product prsenet for updation with this id" })
 
-    return res.status(200).send({status: true,message: "successfull",data: updateUser});
+    return res.status(200).send({status: true,message: "successfully updated",data: updateUser});
   } catch (error) {
     res.status(500).send({ message: error.message });
   }

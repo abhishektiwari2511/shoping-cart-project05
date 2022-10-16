@@ -4,6 +4,7 @@ var mongoose = require("mongoose");
 
 const { isValid, isValidName, isvalidPrice, isValidAvailableSizes } = require("../validator/validator")
 
+//-----------------------------------create api-----------------------------------------------------------------------
 const createProduct = async function (req, res) {
   try {
     let data = req.body;
@@ -78,7 +79,7 @@ const createProduct = async function (req, res) {
   }
 }
 
-
+//-------------------------------------------get api-----------------------------------------------------------------------------------
 const getbyquery = async function (req, res) {
   const { size, name, priceGreaterThan, priceLessThan, priceSort } = req.query
   const filter = { isDeleted: false }
@@ -131,6 +132,7 @@ const getbyquery = async function (req, res) {
   return res.status(200).send({ status: true, message: 'Success', data: finaldata })
 }
 
+//-------------------------------------get by params api------------------------------------------------
 const getbyparams = async function (req, res) {
   try {
     let productId = req.params.productId
@@ -144,7 +146,8 @@ const getbyparams = async function (req, res) {
     return res.status(500).send({ message: error.message })
   }
 }
-
+ 
+//-------------------------------------delete api------------------------------------------------------------------------------
 const deleteProductById = async function (req, res) {
   try {
 
@@ -170,6 +173,7 @@ const deleteProductById = async function (req, res) {
   }
 }
 
+//-----------------------------------------------update api-----------------------------------------------------------------------
 const updateProducts = async function (req, res) {
   try {
     let productId = req.params.productId
