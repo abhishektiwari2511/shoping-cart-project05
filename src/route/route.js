@@ -6,6 +6,8 @@ const {createuser,userLogin, getuser, updateuser} = require("../Controller/userC
 
 const {createProduct, getbyquery, getbyparams, deleteProductById, updateProducts} = require("../Controller/productController");
 
+const {createcart,getCart} = require("../Controller/cartController");
+
 const {authentication,authorisation} = require("../auth/authentication");
 
 //------------------------------------------user router-----------------------------------------------------------------
@@ -29,5 +31,12 @@ router.get("/products/:productId" ,getbyparams);
 router.delete("/products/:productId" ,deleteProductById)
 
 router.put("/products/:productId" ,updateProducts)
+
+//----------------------------------cart routes-----------------------------------------------------------------------------------
+
+router.post("/users/:userId/cart" ,createcart)
+
+router.get("/users/:userId/cart" ,getCart)
+
 
 module.exports=router
