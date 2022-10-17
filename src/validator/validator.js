@@ -10,6 +10,11 @@ const isValidPassword = function (password) {
       }
       return false;
   };
+
+  const isValidWords = function (name) {
+    if (/^[a-z0-9 ,.#@*&%$-]+$/i.test(name)) return true;
+    return false;
+  };
   
   const isValidNumber = function (number) {
     if (/^[0]?[6789]\d{9}$/.test(number)) return true;
@@ -47,4 +52,4 @@ const isValid = function (value) {
     return true
 };
 
-module.exports = { isValidName, isValidNumber, isValidId, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes }
+module.exports = { isValidName, isValidNumber, isValidId, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes, isValidWords }

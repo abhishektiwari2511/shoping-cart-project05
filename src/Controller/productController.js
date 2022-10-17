@@ -55,7 +55,7 @@ const createProduct = async function (req, res) {
     }
 
     if (isDeleted || isDeleted == '') {
-      if (!isValid(isDeleted)) return res.status(400).send({ status: false, message: "isDeleted is not valid " });
+      if (!(isFreeShipping == "true" || isFreeShipping == "false")) return res.status(400).send({ status: false, message: "isDeleted is either true or false " });
     }
 
     if (deletedAt || deletedAt == '') {
@@ -116,18 +116,18 @@ const getbyquery = async function (req, res) {
   if (priceSort || priceSort == '') {
     if (priceSort == 1) {
       const pro = await productModel.find(filter).sort({ price: 1 })
-      if (!pro) { return res.status(400).send({ status: false, message: "No data found that matches your search" }) }
+      if (!pro) { return res.status(400).send({ status: false, message: "No data found for ascending order" }) }
       return res.status(200).send({ status: true, message: pro })
     }
     if (priceSort == -1) {
       const newpro = await productModel.find(filter).sort({ price: -1 });
-      if (!newpro) { return res.status(400).send({ status: false, message: "No data found that matches your search" }) }
+      if (!newpro) { return res.status(400).send({ status: false, message: "No data found for descending order" }) }
       return res.status(200).send({ status: true, message: newpro })
     }
     else return res.status(400).send({ status: false, message: "plss put a valid pricesort" })
   }
   const finaldata = await productModel.find(filter);
-  if (!finaldata || finaldata.length == 0) { return res.status(200).send({ status: true, message: "No data found that matches your search" }) }
+  if (!finaldata || finaldata.length == 0 || finaldata.isDeleted == true) { return res.status(200).send({ status: true, message: "No data found that matches your search or its already deleted" }) }
 
   return res.status(200).send({ status: true, message: 'Success', data: finaldata })
 }

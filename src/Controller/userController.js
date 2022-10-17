@@ -57,7 +57,7 @@ const createuser = async function (req, res) {
 
     if (!isValid(address.billing.city)) return res.status(400).send({ status: false, message: "Invalid billing city or Billing City is required" });
 
-    if (!isValidPincode(address.billing.pincode)) return res.status(400).send({ status: false, message: "Invalid billing pincode or Billing Pincode is required" });
+    if (!isValidPincode(address.billing.pincode) || !isValid(address.billing.pincode)) return res.status(400).send({ status: false, message: "Invalid billing pincode or Billing Pincode is required" });
 
     if (files && files.length > 0) {
       // res.send the link back to frontend/postman
@@ -67,6 +67,7 @@ const createuser = async function (req, res) {
     else {
       return res.status(400).send({ message: "No file found" })
     }
+
     let usercreate = await userModel.create(body);
     return res.status(201).send({ status: true, message: "user create succesfully", data: usercreate })
 
@@ -95,7 +96,8 @@ const userLogin = async function (req, res) {
 
     // ---------------------------decoding hash password---------------------------------------------------------
     let encryptPwd = userid.password;
-
+    
+ // i have to add iat
     await bcrypt.compare(password, encryptPwd, function (err, result) {
       if (result) {
         let token = jwt.sign(
@@ -160,7 +162,7 @@ const updateuser = async function (req, res) {
     }
 
     if (email || email == '') {
-      if (!isValidEmail(email)) return res.status(400).send({ status: false, message: "Email is invalid!" });
+      if (!isValidEmail(email) || !isValid(email)) return res.status(400).send({ status: false, message: "Email is invalid!" });
 
       let userEmail = await userModel.findOne({ email: email });
       if (userEmail) return res.status(409).send({ status: false, message: "This email address already exists, please enter a unique email address!" });
@@ -168,7 +170,7 @@ const updateuser = async function (req, res) {
     }
 
     if (phone || phone == '') {
-      if (!isValidNumber(phone)) return res.status(400).send({ status: false, message: "Phone is invalid" });
+      if (!isValidNumber(phone) || !isValid(phone)) return res.status(400).send({ status: false, message: "Phone is invalid" });
       let userNumber = await userModel.findOne({ phone: phone });
       if (userNumber)
         return res.status(409).send({ status: false, message: "This phone number already exists, please enter a unique phone number!" });
@@ -176,7 +178,7 @@ const updateuser = async function (req, res) {
     }
 
     if (password || password == '') {
-      if (!isValidPassword(password)) return res.status(400).send({ status: false, message: "Password should be strong, please use one number, one upper case, one lower case and one special character and characters should be between 8 to 15 only!" });
+      if (!isValidPassword(password) || !isValid(password)) return res.status(400).send({ status: false, message: "Password should be strong, please use one number, one upper case, one lower case and one special character and characters should be between 8 to 15 only!" });
 
       const salt = await bcrypt.genSalt(10);
       data.password = await bcrypt.hash(data.password, salt);
@@ -185,7 +187,7 @@ const updateuser = async function (req, res) {
       update["password"] = encryptPassword;
     }
     
-    if (address) {
+    if (address || address == '') {
       const { shipping, billing } = address;
 
       if (shipping) {
