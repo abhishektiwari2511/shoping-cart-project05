@@ -6,7 +6,7 @@ const {createuser,userLogin, getuser, updateuser} = require("../Controller/userC
 
 const {createProduct, getbyquery, getbyparams, deleteProductById, updateProducts} = require("../Controller/productController");
 
-const {createcart,getCart} = require("../Controller/cartController");
+const {createCart,getCart} = require("../Controller/cartController");
 
 const {authentication,authorisation} = require("../auth/authentication");
 
@@ -34,9 +34,10 @@ router.put("/products/:productId" ,updateProducts)
 
 //----------------------------------cart routes-----------------------------------------------------------------------------------
 
-router.post("/users/:userId/cart" ,createcart)
+router.post("/users/:userId/cart" ,authentication,authorisation, createCart)
 
-router.get("/users/:userId/cart" ,getCart)
+router.get("/users/:userId/cart" ,authentication,authorisation,getCart);
+
 
 
 module.exports=router

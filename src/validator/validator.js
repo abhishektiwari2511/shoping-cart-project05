@@ -21,10 +21,6 @@ const isValidPassword = function (password) {
     return false;
   };
   
-  const isValidId = function (id) {
-    return mongoose.Types.ObjectId.isValid(id);
-  };
-  
   const isValidPincode =function (pincode) {
     if(/^[1-9][0-9]{5}$/.test(pincode)) return true ;
     return false;
@@ -52,4 +48,4 @@ const isValid = function (value) {
     return true
 };
 
-module.exports = { isValidName, isValidNumber, isValidId, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes, isValidWords }
+module.exports = { isValidName, isValidNumber, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes, isValidWords }
