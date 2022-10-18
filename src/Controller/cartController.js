@@ -118,28 +118,28 @@ const updateCart = async function (req, res) {
 
       let { cartId, productId, removeProduct } = req.body
 
-      if (!isValidObjectId(userId)) return res.status(400).send({ status: false, message: "enter a valid user id" })
+      if (!mongoose.Types.ObjectId.isValid(userId)) return res.status(400).send({ status: false, message: "enter a valid user id" })
 
       let findUser = await cartModel.findOne({ cartId: cartId, userId: userId })
 
       if (!findUser) return res.status(404).send({ status: false, message: "cart of this user does not exist" })
 
       //Authorization Check
-      if (findUser.userId != req.token.userId) return res.status(403).send({ status: false, message: "Unauthorized User" })
+      // if (findUser.userId != req.token.userId) return res.status(403).send({ status: false, message: "Unauthorized User" })
 
-      if (!isValidRequestBody(req.body)) return res.status(400).send({ status: false, message: "body cannot be empty" })
+      if (Object.keys(req.body).length == 0) return res.status(400).send({ status: false, message: "body cannot be empty" })
 
-      if (!isPresent(cartId) || !isPresent(productId) || !isPresent(removeProduct)) return res.status(400).send({ status: false, message: "Required : cartId ,productId ,removeProduct" })
+      if (!isValid(cartId) || !isValid(productId) || !isValid(removeProduct)) return res.status(400).send({ status: false, message: "Required : cartId ,productId ,removeProduct" })
 
-      if (!isValidObjectId(cartId) || !isValidObjectId(productId)) return res.status(400).send({ status: false, message: "enter valid IDs" })
-
-      if (!([0, 1]).includes(removeProduct)) return res.status(400).send({ status: false, message: "removeProduct must contain 0 or 1" })
+      if (!mongoose.Types.ObjectId.isValid(cartId) || !mongoose.Types.ObjectId.isValid(productId)) return res.status(400).send({ status: false, message: "enter valid IDs" })
+       
+      if (!(removeProduct == 1 || removeProduct == 0)) return res.status(400).send({ status: false, message: "removeProduct must contain 0 or 1" })
       
 
       let findCart = await cartModel.findById({ _id: cartId })
 
       if (!findCart) return res.status(404).send({ status: false, message: "Cart Not Found" })
-l
+      
       let arr = []
 
       //using for loop saved the product ids in arr
@@ -219,4 +219,4 @@ l
   }
 }
 
-module.exports = {createCart ,getCart ,DeleteCart};
+module.exports = {createCart ,getCart ,DeleteCart, updateCart};

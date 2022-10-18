@@ -6,7 +6,7 @@ const {createuser,userLogin, getuser, updateuser} = require("../Controller/userC
 
 const {createProduct, getbyquery, getbyparams, deleteProductById, updateProducts} = require("../Controller/productController");
 
-const {createCart,getCart} = require("../Controller/cartController");
+const {createCart,getCart,DeleteCart,updateCart} = require("../Controller/cartController");
 
 const {authentication,authorisation} = require("../auth/authentication");
 
@@ -38,6 +38,8 @@ router.post("/users/:userId/cart" ,authentication,authorisation, createCart)
 
 router.get("/users/:userId/cart" ,authentication,authorisation,getCart);
 
+router.delete("/users/:userId/cart" ,authentication,authorisation,DeleteCart);
 
+router.put("/users/:userId/cart",updateCart)
 
 module.exports=router
