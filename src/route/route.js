@@ -46,8 +46,8 @@ router.put("/users/:userId/cart",authentication,authorisation, updateCart)
 
 //------------------------------------order routes----------------------------------------------------------------------------------
 
-router.post("/users/:userId/orders" ,createOrder )
+router.post("/users/:userId/orders" ,authentication,authorisation,createOrder )
 
-router.put("/users/:userId/orders" ,updateOrder)
+router.put("/users/:userId/orders" ,authentication,authorisation,updateOrder)
 
 module.exports=router
