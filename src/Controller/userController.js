@@ -1,7 +1,7 @@
 const userModel = require("../Model/userModel")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
-const { isValid, isValidPincode, isValidEmail, isValidPassword, isValidName, isValidNumber } = require("../validator/validator")
+const { isValid, isValidPincode, isValidEmail, isValidPassword, isValidName, isValidNumber, isValidFile } = require("../validator/validator")
 const { uploadFile } = require("../aws/awscontroller");
 const { default: mongoose } = require("mongoose");
 
@@ -61,6 +61,8 @@ const createuser = async function (req, res) {
 
     if (files && files.length > 0) {
       // res.send the link back to frontend/postman
+      if (!isValidFile(files[0].originalname))
+      return res.status(400).send({ status: false, message: `Enter formate jpeg/jpg/png only.` })
       let uploadedFileURL = await uploadFile(files[0])
       body.profileImage = uploadedFileURL
     }
@@ -230,6 +232,8 @@ const updateuser = async function (req, res) {
     }
 
     if (files && files.length > 0) {
+      if (!isValidFile(files[0].originalname))
+      return res.status(400).send({ status: false, message: `Enter formate jpeg/jpg/png only.` })
       let uploadedFileURL = await uploadFile(files[0])
       update["profileImage"] = uploadedFileURL;
       }  else if( Object.keys(data).includes("profileImage")) {

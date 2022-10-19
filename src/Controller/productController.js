@@ -2,7 +2,7 @@ const productModel = require("../Model/productModel");
 const { uploadFile } = require("../aws/awscontroller");
 var mongoose = require("mongoose");
 
-const { isValid, isValidName, isvalidPrice, isValidAvailableSizes } = require("../validator/validator")
+const { isValid, isValidName, isvalidPrice, isValidAvailableSizes,isValidFile } = require("../validator/validator")
 
 //-----------------------------------create api-----------------------------------------------------------------------
 const createProduct = async function (req, res) {
@@ -63,6 +63,8 @@ const createProduct = async function (req, res) {
     }
 
     if (files && files.length > 0) {
+      if (!isValidFile(files[0].originalname))
+      return res.status(400).send({ status: false, message: `Enter formate jpeg/jpg/png only.` })
 
       let uploadedFileURL = await uploadFile(files[0])
       data.productImage = uploadedFileURL
@@ -238,6 +240,8 @@ const updateProducts = async function (req, res) {
     }
 
     if (files && files.length > 0) {
+      if (!isValidFile(files[0].originalname))
+            return res.status(400).send({ status: false, message: `Enter formate jpeg/jpg/png only.` })
       let uploadedFileURL = await uploadFile(files[0])
       product["productImage"] = uploadedFileURL;
     } else if (Object.keys(data).includes("productImage")) {

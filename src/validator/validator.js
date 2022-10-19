@@ -47,5 +47,14 @@ const isValid = function (value) {
     }
     return true
 };
+ 
+const isvalidStatus = (status) => {
+      if(!["pending", "completed", "cancled"].includes(status)) return false;
+      return true;
+};
+const isValidFile = (img) => {
+  const regex = /(\/*\.(?:png|gif|webp|jpeg|jpg))/.test(img)
+  return regex
+}
 
-module.exports = { isValidName, isValidNumber, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes, isValidWords }
+module.exports = { isValidName, isValidNumber, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes, isValidWords,isValidFile,isvalidStatus }

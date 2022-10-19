@@ -8,6 +8,8 @@ const {createProduct, getbyquery, getbyparams, deleteProductById, updateProducts
 
 const {createCart,getCart,DeleteCart,updateCart} = require("../Controller/cartController");
 
+const {createOrder ,updateOrder} = require("../Controller/orderController");
+
 const {authentication,authorisation} = require("../auth/authentication");
 
 //------------------------------------------user router-----------------------------------------------------------------
@@ -36,10 +38,16 @@ router.put("/products/:productId" ,updateProducts)
 
 router.post("/users/:userId/cart" ,authentication,authorisation, createCart)
 
-router.get("/users/:userId/cart" ,authentication,authorisation,getCart);
+router.get("/users/:userId/cart" ,authentication,authorisation, getCart);
 
-router.delete("/users/:userId/cart" ,authentication,authorisation,DeleteCart);
+router.delete("/users/:userId/cart",authentication,authorisation, DeleteCart);
 
-router.put("/users/:userId/cart",updateCart)
+router.put("/users/:userId/cart",authentication,authorisation, updateCart)
+
+//------------------------------------order routes----------------------------------------------------------------------------------
+
+router.post("/users/:userId/orders" ,createOrder )
+
+router.put("/users/:userId/orders" ,updateOrder)
 
 module.exports=router
