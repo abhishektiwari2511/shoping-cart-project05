@@ -36,7 +36,7 @@ router.put("/products/:productId" ,updateProducts)
 
 //----------------------------------cart routes-----------------------------------------------------------------------------------
 
-router.post("/users/:userId/cart" ,authentication,authorisation, createCart)
+router.post("/users/:userId/cart" , createCart)
 
 router.get("/users/:userId/cart" ,authentication,authorisation, getCart);
 
@@ -46,8 +46,8 @@ router.put("/users/:userId/cart",authentication,authorisation, updateCart)
 
 //------------------------------------order routes----------------------------------------------------------------------------------
 
-router.post("/users/:userId/orders" ,authentication,authorisation,createOrder )
+router.post("/users/:userId/orders" ,createOrder )
 
-router.put("/users/:userId/orders" ,authentication,authorisation,updateOrder)
+router.put("/users/:userId/orders" ,updateOrder)
 
 module.exports=router

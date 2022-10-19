@@ -6,7 +6,8 @@ const { isValid,isvalidStatus } = require("../validator/validator")
 const userModel = require("../Model/userModel")
 
 const createOrder  = async function(req,res){
-    let cartId = req.body.cartId
+    let cartId = req.body.cartId;
+    let cancellable = req.body.cancellable;
 
     if(Object.keys(req.body).length == 0) return res.status(400).send({status:false ,message:"plss put some data in body"});
     if(!mongoose.Types.ObjectId.isValid(cartId) || !isValid(cartId)) return res.status(400).send({status:false ,message:`plss put valid ${cartId}`});
@@ -26,14 +27,14 @@ const createOrder  = async function(req,res){
     totalPrice:userCart.totalPrice,
     totalItems:userCart.totalItems,
     totalQuantity:totalQuantity,
-    cancellable:true,
+    cancellable:cancellable,
     status:"pending"
     
 }
 let orderCreate = await orderModel.create(obj)
 
 let cart ={totalItems:0,totalPrice:0,items:[]}
-const finaldata = await cartModel.findOneAndUpdate({userId:userId},cart,{new:true})
+const finaldata = await cartModel.findOneAndUpdate({_id:cartId},cart,{new:true})
     
 
 return res.status(201).send({status:true, message:"Success",data:orderCreate})
