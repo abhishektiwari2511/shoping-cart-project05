@@ -148,11 +148,10 @@ const updateCart = async function (req, res) {
           arr.push(findCart.items[i].productId.toString())
       }
 
-      //console.log(arr)
+     
       if (!arr.includes(productId)) return res.status(404).send({ status: false, message: "product does not exist" })
 
-      //if product found , access quantity 
-      //[0] : want the one only 
+  
       let quantity = findCart.items.filter(x => x.productId.toString() === productId)[0].quantity
 
       let product = await productModel.findById(productId)
@@ -201,8 +200,6 @@ const updateCart = async function (req, res) {
           let updateCart = await cartModel.findOneAndUpdate(
               { _id: cartId, "items.productId": productId },
               {
-                  //$unset:{"items.$.productId":1,"items.$.quantity":1,"items.$._id":1}only removes a field, doesn't delete
-                  //$pull : deletes a specified object from an array
                   $pull: { items: { productId } },
                   $inc: { totalPrice: - product.price * obj.quantity, totalItems: -1 }
               },
@@ -220,70 +217,5 @@ const updateCart = async function (req, res) {
 module.exports = {createCart ,getCart ,DeleteCart, updateCart};
 
 
-
-
-// const updateCart = async function (req, res) {
-//   try {
-//       let data = req.body
-//       let { cartId, productId, removeProduct } = data
-
-//       if (removeProduct == 1) {
-//           let cart = await cartModel.findOne({ _id: cartId, "items.productId": productId })
-//           if (!cart) return res.status(400).send({ status: false, message: "product is already deleted" })
-//           let array = cart.items
-//           let totalQuantity = 0
-//           for (let i = 0; i < array.length; i++) {
-//               if (array[i].productId == productId) {
-//                   totalQuantity = array[i].quantity
-//               }
-//           }
-
-//           totalQuantity = totalQuantity - 1
-//           if (totalQuantity == 0) {
-//               let product = await productModel.findOne({ _id: productId, isDeleted: false })
-
-//               let updatecart = await cartModel.findOneAndUpdate({userId:userId,_id: cartId,"items.productId":productId},
-//                   {
-//                       $pull: { items: { "productId": productId } },             //$pull will remove the entire object whenever condition is match
-//                       $inc: { totalItems: -1, totalPrice: -product.price }
-//                   }, { new: true })
-
-//               return res.status(201).send({ status: true, message: "Item deleted successfully", data: updatecart })
-
-//           }
-//           let product = await productModel.findOne({ _id: productId, isDeleted: false })
-//           let updateCart = await cartModel.findOneAndUpdate({userId:userId,_id: cartId, "items.productId": productId },
-//               { $inc: { "items.$.quantity": -1, totalPrice: -product.price } },
-//               { new: true })
-
-//           return res.status(201).send({ status: true, message: "product quantity remove successfully", data: updateCart })
-//       }
-
-//       if (removeProduct == 0) {
-//           let product = await productModel.findOne({ _id: productId, isDeleted: false })
-//           let cart = await cartModel.findOne({ _id: cartId, "items.productId": productId })
-//           if (!cart) return res.status(400).send({ status: false, message: "product is already deleted" })
-
-//           let productQuantity = 0
-//           let arr = cart.items
-//           for (let i = 0; i < arr.length; i++) {
-//               if (arr[i].productId == productId) {
-//                   productQuantity = arr[i].quantity
-
-//               }
-//           }
-//           console.log(productQuantity)
-
-//           let updatecart = await cartModel.findOneAndUpdate({userId:userId, _id: cartId,"items.productId":productId},
-//               {
-//                   $pull: { items: { "productId": productId } },             //$pull will remove the entire object whenever condition is match
-//                   $inc: { totalItems: -1, totalPrice: -product.price * productQuantity }
-//               }, { new: true })
-
-//           return res.status(200).send({ status: true, data: updatecart })
-//       }
-//   }
-//   catch (err) {
-//       return res.status(500).send({ status: false, message: err.message })
-//   }
-// }
+//$unset:{"items.$.productId":1,"items.$.quantity":1,"items.$._id":1}only removes a field, doesn't delete
+                  //$pull : deletes a specified object from an array
