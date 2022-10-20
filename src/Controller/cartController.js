@@ -42,11 +42,7 @@ const userModel = require("../Model/userModel");
         };
   
         let newlyCart = await cartModel.create(cartData);
-        // let createdCart = await cartModel.create(cartBody)
-        //     // console.log(createdCart)
-        //     let productDataAll = await cartModel.findOne({ userId: userId }).populate({path : 'items.productId', select: { '_id': 1, 'title': 1, 'price': 1, 'productImage': 1} })
-
-            // return res.status(201).send({ status: true, message: "Success", data: productDataAll })
+       
         return res.status(201).send({status: true,message: "Success",data: newlyCart});
       }
   
@@ -89,7 +85,7 @@ let getCart = async function(req,res){
       let userId = req.params.userId
       if(!mongoose.Types.ObjectId.isValid(userId)) return res.status(400).send({status:false,message:"please provide valid userid for details"})
 
-      let checkCart = await cartModel.findOne({userId:userId }).populate("items")
+      let checkCart = await cartModel.findOne({userId:userId }).populate({path:"items.productId",select:{_id:1,title:1,price:1,description:1,productImage:1}})
       if(!checkCart){
       return res.status(400).send({status:false, message : "The Cart does not exist with this user"})
   }
@@ -129,9 +125,6 @@ const updateCart = async function (req, res) {
       let findUser = await cartModel.findOne({ cartId: cartId, userId: userId })
 
       if (!findUser) return res.status(404).send({ status: false, message: "cart of this user does not exist" })
-
-      //Authorization Check
-      // if (findUser.userId != req.token.userId) return res.status(403).send({ status: false, message: "Unauthorized User" })
 
       if (Object.keys(req.body).length == 0) return res.status(400).send({ status: false, message: "body cannot be empty" })
 
