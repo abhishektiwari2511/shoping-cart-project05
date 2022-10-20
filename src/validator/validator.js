@@ -11,6 +11,10 @@ const isValidPassword = function (password) {
       return false;
   };
 
+  const isValidadress = function (name) {
+    if (/^[a-z ,.'-]+$/i.test(name)) return true;
+    return false;
+  };
   const isValidWords = function (name) {
     if (/^[a-z0-9 ,.#@*&%$-]+$/i.test(name)) return true;
     return false;
@@ -57,4 +61,4 @@ const isValidFile = (img) => {
   return regex
 }
 
-module.exports = { isValidName, isValidNumber, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes, isValidWords,isValidFile,isvalidStatus }
+module.exports = { isValidName, isValidNumber, isValidPincode, isValidEmail, isValid ,isValidPassword, isvalidPrice,isValidAvailableSizes, isValidWords,isValidFile,isvalidStatus,isValidadress }

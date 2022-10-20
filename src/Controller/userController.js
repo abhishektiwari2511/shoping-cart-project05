@@ -1,7 +1,7 @@
 const userModel = require("../Model/userModel")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
-const { isValid, isValidPincode, isValidEmail, isValidPassword, isValidName, isValidNumber, isValidFile } = require("../validator/validator")
+const { isValid, isValidPincode, isValidEmail, isValidPassword, isValidName, isValidNumber, isValidFile, isValidadress } = require("../validator/validator")
 const { uploadFile } = require("../aws/awscontroller");
 const { default: mongoose } = require("mongoose");
 
@@ -47,15 +47,15 @@ const createuser = async function (req, res) {
     body.password = await bcrypt.hash(body.password, salt);
     //    adress validation
 
-    if (!isValid(address.shipping.street)) return res.status(400).send({ status: false, message: "Invalid shipping street or shipping street is required" })
+    if (!isValid(address.shipping.street) || !isValidadress(address.shipping.street)) return res.status(400).send({ status: false, message: "Invalid shipping street or shipping street is required" })
 
-    if (!isValid(address.shipping.city)) return res.status(400).send({ status: false, message: "Invalid shipping city or Shipping City is required" });
+    if (!isValid(address.shipping.city) || !isValidadress(address.shipping.city)) return res.status(400).send({ status: false, message: "Invalid shipping city or Shipping City is required" });
 
     if (!isValid(address.shipping.pincode) || !isValidPincode(address.shipping.pincode)) return res.status(400).send({ status: false, message: "Invalid shipping pincode or Shipping Pincode is required" });
 
-    if (!isValid(address.billing.street)) return res.status(400).send({ status: false, message: "Invalid billing street or Billing Street is required" });
+    if (!isValid(address.billing.street) || !isValidadress(address.billing.street)) return res.status(400).send({ status: false, message: "Invalid billing street or Billing Street is required" });
 
-    if (!isValid(address.billing.city)) return res.status(400).send({ status: false, message: "Invalid billing city or Billing City is required" });
+    if (!isValid(address.billing.city) || !isValidadress(address.billing.city)) return res.status(400).send({ status: false, message: "Invalid billing city or Billing City is required" });
 
     if (!isValidPincode(address.billing.pincode) || !isValid(address.billing.pincode)) return res.status(400).send({ status: false, message: "Invalid billing pincode or Billing Pincode is required" });
 
@@ -196,17 +196,17 @@ const updateuser = async function (req, res) {
         const { street, city, pincode } = shipping;
 
         if (street || street == '') {
-          if (!isValid(address.shipping.street)) return res.status(400).send({ status: false, message: "Invalid shipping street!" });
+          if (!isValid(address.shipping.street) || !isValidadress(address.shipping.street)) return res.status(400).send({ status: false, message: "Invalid shipping street!" });
           update["address.shipping.street"] = street;
         }
 
         if (city || city == '') {
-          if (!isValid(address.shipping.city)) return res.status(400).send({ status: false, message: "Invalid shipping city!" });
+          if (!isValid(address.shipping.city) || !isValidadress(address.shipping.city)) return res.status(400).send({ status: false, message: "Invalid shipping city!" });
           update["address.shipping.city"] = city;
         }
 
         if (pincode || pincode == '') {
-          if (!isValidPincode(address.shipping.pincode)) return res.status(400).send({ status: false, message: "Invalid shipping pincode!" });
+          if (!isValidPincode(address.shipping.pincode) || !isValid(address.shipping.pincode)) return res.status(400).send({ status: false, message: "Invalid shipping pincode!" });
           update["address.shipping.pincode"] = pincode;
         }
       }
@@ -215,17 +215,17 @@ const updateuser = async function (req, res) {
         const { street, city, pincode } = billing;
 
         if (street || street == '') {
-          if (!isValid(address.billing.street)) return res.status(400).send({ status: false, message: "Invalid billing street!" });
+          if (!isValid(address.billing.street) || !isValidadress(address.billing.street)) return res.status(400).send({ status: false, message: "Invalid billing street!" });
           update["address.billing.street"] = street;
         }
 
         if (city || city == '') {
-          if (!isValid(address.billing.city)) return res.status(400).send({ status: false, message: "Invalid billing city!" });
+          if (!isValid(address.billing.city) || !isValidadress(address.billing.city)) return res.status(400).send({ status: false, message: "Invalid billing city!" });
           update["address.billing.city"] = city;
         }
 
         if (pincode || pincode == '') {
-          if (!isValidPincode(address.billing.pincode)) return res.status(400).send({ status: false, message: "Invalid billing pincode!" });
+          if (!isValidPincode(address.billing.pincode) || !isValid(address.billing.pincode)) return res.status(400).send({ status: false, message: "Invalid billing pincode!" });
           update["address.billing.pincode"] = pincode;
         }
       }

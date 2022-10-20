@@ -21,14 +21,12 @@ const createOrder  = async function(req,res){
     for(let i=0;i<array.length;i++){
         totalQuantity+=array[i].quantity 
     }
-    console.log(totalQuantity)
     let obj ={userId:userCart.userId,
     items:userCart.items,
     totalPrice:userCart.totalPrice,
     totalItems:userCart.totalItems,
     totalQuantity:totalQuantity,
-    cancellable:cancellable,
-    status:"pending"
+    cancellable:cancellable
     
 }
 let orderCreate = await orderModel.create(obj)
@@ -68,7 +66,7 @@ const updateOrder = async function(req,res) {
              if(status == "cancled") {
                 let newobj = { isDeleted : true, deletedAt : Date.now() ,status : status ,cancellable : false}
                 let updateneworder = await orderModel.findOneAndUpdate({_id : orderId} ,newobj ,{new:true});
-                return res.status(200).send({status:true ,message:"the order is cancelled"});
+                return res.status(200).send({status:true ,message:"Success"});
          }
         } 
         else  return res.status(400).send({status:false, message:"you cannot cancelled this order"});
