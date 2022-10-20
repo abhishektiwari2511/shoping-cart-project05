@@ -119,12 +119,12 @@ const getbyquery = async function (req, res) {
     if (priceSort == 1) {
       const pro = await productModel.find(filter).sort({ price: 1 })
       if (!pro) { return res.status(400).send({ status: false, message: "No data found for ascending order" }) }
-      return res.status(200).send({ status: true, message: pro })
+      return res.status(200).send({ status: true, message: 'Success', data: pro })
     }
     if (priceSort == -1) {
       const newpro = await productModel.find(filter).sort({ price: -1 });
       if (!newpro) { return res.status(400).send({ status: false, message: "No data found for descending order" }) }
-      return res.status(200).send({ status: true, message: newpro })
+      return res.status(200).send({ status: true,message: 'Success', data: newpro })
     }
     else return res.status(400).send({ status: false, message: "plss put a valid pricesort" })
   }

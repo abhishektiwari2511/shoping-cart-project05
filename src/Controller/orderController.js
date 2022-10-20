@@ -68,6 +68,9 @@ const updateOrder = async function(req,res) {
                 let updateneworder = await orderModel.findOneAndUpdate({_id : orderId} ,newobj ,{new:true});
                 return res.status(200).send({status:true ,message:"Success"});
          }
+         if(status == "pending") {
+            return res.status(400).send({status:true ,message:"the order is already in pending"});
+         }
         } 
         else  return res.status(400).send({status:false, message:"you cannot cancelled this order"});
     } catch (err) {

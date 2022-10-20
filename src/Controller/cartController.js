@@ -42,6 +42,11 @@ const userModel = require("../Model/userModel");
         };
   
         let newlyCart = await cartModel.create(cartData);
+        // let createdCart = await cartModel.create(cartBody)
+        //     // console.log(createdCart)
+        //     let productDataAll = await cartModel.findOne({ userId: userId }).populate({path : 'items.productId', select: { '_id': 1, 'title': 1, 'price': 1, 'productImage': 1} })
+
+            // return res.status(201).send({ status: true, message: "Success", data: productDataAll })
         return res.status(201).send({status: true,message: "Success",data: newlyCart});
       }
   
