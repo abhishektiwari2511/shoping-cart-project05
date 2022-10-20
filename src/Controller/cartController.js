@@ -37,7 +37,7 @@ const userModel = require("../Model/userModel");
         let cartData = {
           userId,
           items: [{ productId: productId, quantity: quantity }],
-          totalPrice: (findProduct.price * quantity), //.toFixed(2),
+          totalPrice: (findProduct.price * quantity), 
           totalItems: 1,
         };
   

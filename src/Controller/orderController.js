@@ -38,44 +38,67 @@ const finaldata = await cartModel.findOneAndUpdate({_id:cartId},cart,{new:true})
 return res.status(201).send({status:true, message:"Success",data:orderCreate})
 }
 
-const updateOrder = async function(req,res) {
+
+
+const updateOrder = async function (req, res) {
     try {
-    let userId = req.params.userId;
-    let data = req.body;
-    if(Object.keys(data).length == 0) return res.status(400).send({status:false, message:"pls put some data in body"});
-      let {orderId , status} = data;
-      
-      if(!mongoose.Types.ObjectId.isValid(orderId) || !isValid(orderId)) return res.status(400).send({status:false, message:"pls put valid orderId"});
-
-      if(!isValid(status) || !isvalidStatus(status)) return res.status(400).send({status:false, message:"pls put valid status or status is required"});
-         let newlyuser = await userModel.findById(userId);
-         if(!newlyuser) return res.status(400).send({status:false, message:"user is not exist"});
-         
-         let userCart = await orderModel.findOne({_id:orderId})
-
-         if(!userCart) return res.status(400).send({status:false, message:"order is deleted or not exist"});
-        
-         if(!(orderId == userCart._id && userId == userCart.userId)) return res.status(400).send({status:false, message:"this order is not belongs to the user"});
-          
-         if(userCart.cancellable == true ) {
-            if(status == "completed") {
-            let obj = { status : status ,cancellable : false};
-         let updateneworder = await orderModel.findOneAndUpdate({_id : orderId} ,obj ,{new:true});
-         return res.status(200).send({status:true ,message:"Success" ,data:updateneworder});
-            }
-             if(status == "cancled") {
-                let newobj = { isDeleted : true, deletedAt : Date.now() ,status : status ,cancellable : false}
-                let updateneworder = await orderModel.findOneAndUpdate({_id : orderId} ,newobj ,{new:true});
-                return res.status(200).send({status:true ,message:"Success"});
-         }
-         if(status == "pending") {
-            return res.status(400).send({status:true ,message:"the order is already in pending"});
-         }
-        } 
-        else  return res.status(400).send({status:false, message:"you cannot cancelled this order"});
-    } catch (err) {
-        return res.status(500).send({ message: err.message })
-      }    
-}
+      let userId = req.params.userId;
+  
+      if (!isValid(userId) || !mongoose.Types.ObjectId.isValid(userId))
+        return res.status(400).send({ status: false, message: "Invalid userId" });
+  
+      let data = req.body;
+      let { status, orderId } = data;
+  
+      if (!isValid(orderId) || !mongoose.Types.ObjectId.isValid(orderId))
+        return res
+          .status(400)
+          .send({ status: false, message: "Invalid orderId" });
+  
+      let orderDetails = await orderModel.findOne({
+        _id: orderId,
+        isDeleted: false,
+      });
+  
+      if (!isvalidStatus(status)) {
+        return res.status(400).send({
+          status: false,
+          message: "status should be from [pending, completed, cancelled]",
+        });
+      }
+  
+      if (orderDetails.status === "completed") {
+        return res.status(400).send({
+          status: false,
+          message: "Order completed, now its status can not be updated",
+        });
+      }
+  
+      if (orderDetails.cancellable === false && status == "cancelled") {
+        return res
+          .status(400)
+          .send({ status: false, message: "Order is not cancellable" });
+      } else {
+        if (status === "pending") {
+          return res
+            .status(400)
+            .send({ status: false, message: "order status is already pending" });
+        }
+  
+        let orderStatus = await orderModel.findOneAndUpdate(
+          { _id: orderId },
+          { $set: { status: status } },
+          { new: true }
+        );
+        return res.status(200).send({
+          status: true,
+          message: "Success",
+          data: orderStatus,
+        });
+      }
+    } catch (error) {
+      res.status(500).send({ status: false, error: error.message });
+    }
+  };
 
 module.exports = {createOrder ,updateOrder}
