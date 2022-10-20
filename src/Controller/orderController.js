@@ -55,22 +55,28 @@ const updateOrder = async function(req,res) {
          
          let userCart = await orderModel.findOne({_id:orderId})
 
-         if(!userCart || userCart.isDeleted == true) return res.status(400).send({status:false, message:"order is deleted or not exist"});
+         if(!userCart) return res.status(400).send({status:false, message:"order is deleted or not exist"});
         
          if(!(orderId == userCart._id && userId == userCart.userId)) return res.status(400).send({status:false, message:"this order is not belongs to the user"});
           
          if(userCart.cancellable == true ) {
-            let obj = { status : status};
+            if(status == "completed") {
+            let obj = { status : status ,cancellable : false};
          let updateneworder = await orderModel.findOneAndUpdate({_id : orderId} ,obj ,{new:true});
          return res.status(200).send({status:true ,message:"Success" ,data:updateneworder});
+            }
+             if(status == "cancled") {
+                let newobj = { isDeleted : true, deletedAt : Date.now() ,status : status ,cancellable : false}
+                let updateneworder = await orderModel.findOneAndUpdate({_id : orderId} ,newobj ,{new:true});
+                return res.status(200).send({status:true ,message:"the order is cancelled"});
          }
-
-        else{
-            return res.status(400).send({status:false, message:"you cannot cancelled this order"});
-        }
+        } 
+        else  return res.status(400).send({status:false, message:"you cannot cancelled this order"});
     } catch (err) {
         return res.status(500).send({ message: err.message })
       }    
 }
+
+
 
 module.exports = {createOrder ,updateOrder}

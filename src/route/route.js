@@ -36,7 +36,7 @@ router.put("/products/:productId" ,updateProducts)
 
 //----------------------------------cart routes-----------------------------------------------------------------------------------
 
-router.post("/users/:userId/cart" , createCart)
+router.post("/users/:userId/cart" ,authentication,authorisation, createCart)
 
 router.get("/users/:userId/cart" ,authentication,authorisation, getCart);
 

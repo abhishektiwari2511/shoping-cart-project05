@@ -63,7 +63,7 @@ const userModel = require("../Model/userModel");
   
       let updatedata = await cartModel.findOneAndUpdate({ _id: cartId, "items.productId":productId }, updatedCart, { new: true });
   
-      return res.status(200).send({status: true,message: "Success",data: updatedata});
+      return res.status(201).send({status: true,message: "Success",data: updatedata});
           }
         }
   
@@ -72,7 +72,7 @@ const userModel = require("../Model/userModel");
   
     let updatedata = await cartModel.findOneAndUpdate({ _id: cartId }, updatedCart, { new: true });
   
-        return res.status(200).send({status: true,message: "Success",data: updatedata});
+        return res.status(201).send({status: true,message: "Success",data: updatedata});
       }
     } catch (err) {
       res.status(500).send({ staus: false, message: err.message });
@@ -159,7 +159,6 @@ const updateCart = async function (req, res) {
 
       let product = await productModel.findById(productId)
 
-      //if removeProduct == 1
       if (removeProduct == 1) {
           if (quantity > 1) {
 
